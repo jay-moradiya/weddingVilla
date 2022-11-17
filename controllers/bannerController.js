@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
 const bannerModel = require("../models/bannerModel");
-const banner = mongoose.model('banner', bannerModel);
 
 // post banner
 const postBanner = async (req, res) => {
@@ -8,7 +6,7 @@ const postBanner = async (req, res) => {
         if (!req.body.title || !req.body.image) {
             return res.status(500).json({ msg: 'please fill all detail' })
         } else {
-            const postNewbanner = new banner(req.body);
+            const postNewbanner = new bannerModel(req.body);
             const result = await postNewbanner.save();
             res.status(201).send(result);
         }
@@ -19,7 +17,7 @@ const postBanner = async (req, res) => {
 
 const getBanners = async (req, res) => {
     try {
-        const getResult = await banner.find();
+        const getResult = await bannerModel.find();
         res.status(200).send(getResult);
     } catch (err) {
         res.status(500).send(err);
@@ -28,7 +26,7 @@ const getBanners = async (req, res) => {
 
 const getBannerById = async (req, res) => {
     try {
-        const getByIdResult = await banner.findById({ _id: req.params.id });
+        const getByIdResult = await bannerModel.findById({ _id: req.params.id });
         res.status(200).send(getByIdResult);
     } catch (err) {
         res.status(500).send(err);
@@ -37,7 +35,7 @@ const getBannerById = async (req, res) => {
 
 const updateBanner = async (req, res) => {
     try {
-        let updateResult = await banner.findByIdAndUpdate({ _id: req.params.id }, req.body, { new: true, useFindAndModify: true })
+        let updateResult = await bannerModel.findByIdAndUpdate({ _id: req.params.id }, req.body, { new: true, useFindAndModify: true })
         res.status(200).json(updateResult)
     } catch (error) {
         res.json(error)
@@ -46,7 +44,7 @@ const updateBanner = async (req, res) => {
 
 const deleteBanner = async (req, res) => {
     try {
-        let deleteResult = await banner.findByIdAndDelete({ _id: req.params.id }, req.body);
+        let deleteResult = await bannerModel.findByIdAndDelete({ _id: req.params.id }, req.body);
         res.status(200).json(deleteResult)
     } catch (err) {
         res.status(500).json(err)
